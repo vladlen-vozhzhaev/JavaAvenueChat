@@ -2,14 +2,19 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<VBox fx:controller="sample.Controller" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300" prefWidth="275" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300" prefWidth="275" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <children>
-      <TextArea prefHeight="225" prefWidth="275" fx:id="textArea" />
+      <TextArea fx:id="textArea" editable="false" prefHeight="225" prefWidth="275">
+         <font>
+            <Font name="Fira Code Regular" size="18.0" />
+         </font>
+      </TextArea>
       <HBox prefHeight="24.0" prefWidth="275">
          <children>
-            <TextField prefHeight="25.0" prefWidth="223.0" />
-            <Button mnemonicParsing="false" text="Отправить" />
+            <TextField fx:id="textField" onAction="#send" prefHeight="25.0" prefWidth="223.0" />
+            <Button mnemonicParsing="false" onAction="#send" text="Отправить" />
          </children>
       </HBox>
       <Button onAction="#connect" text="Подключиться" />
