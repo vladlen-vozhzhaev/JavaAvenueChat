@@ -7,12 +7,15 @@ import javafx.scene.control.TextField;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.util.Scanner;
 
 public class Controller {
     Socket socket;
     DataOutputStream out;
+    @FXML
+    TextArea textAreaUserList;
     @FXML
     TextArea textArea;
     @FXML
@@ -33,18 +36,25 @@ public class Controller {
     @FXML
     private void connect(){
         try {
-            socket = new Socket("213.139.209.109",8188);
-            DataInputStream in = new DataInputStream(socket.getInputStream());
+            socket = new Socket("localhost",8188);
+            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     while (true){
-                        String response = null; // Читаем ответ сервера
                         try {
-                            response = in.readUTF();
-                            textArea.appendText(response+"\n");
-                        } catch (IOException e) {
+                            String response = ois.readObject().toString(); // Ждём сообщение от сервера
+                            if(response.indexOf("**userList**") == 0){
+                                String[] usersName= response.split("//");
+                                textAreaUserList.clear();
+                                for (String userName:usersName) {
+                                    textAreaUserList.appendText(userName+"\n");
+                                }
+                            }else{
+                                textArea.appendText(response+"\n");
+                            }
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
